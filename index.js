@@ -45,7 +45,7 @@ var listen = function (method, data, cb) {
 };
 var removeListener = function (id) {
   var request = requests[id];
-  if(request.type === 'call'){
+  if(request.type === 'call') {
     return;
   }
   delete requests[id];
@@ -63,14 +63,20 @@ var done = function (message) {
   }
 
   // call requests are deleted after first return
-  if (requests[id] && requests[id].type === 'call') {
+  if(requests[id] && requests[id].type === 'call') {
     delete requests[id];
   }
 };
+
+process.on("message", function (message) {
+  done(message);
+});
+
 
 var api = {};
 api.call = call;
 api.listen = listen;
 api.done = done;
+
 
 module.exports = api;
